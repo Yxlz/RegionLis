@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rlis.inspection.mapper.RlInspecItemMapper">
+    
+    <resultMap type="RlInspecItem" id="RlInspecItemResult">
+        <result property="itemId"    column="ITEM_ID"    />
+        <result property="itemCode"    column="ITEM_CODE"    />
+        <result property="itemName"    column="ITEM_NAME"    />
+        <result property="mnemonicCode"    column="MNEMONIC_CODE"    />
+        <result property="orgId"    column="ORG_ID"    />
+        <result property="enable"    column="ENABLE"    />
+        <result property="itemPrice"    column="ITEM_PRICE"    />
+        <result property="fixItemId"    column="FIX_ITEM_ID"    />
+        <result property="remark"    column="REMARK"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+        <association property="org"    column="ORG_ID" javaType="RlSysOrg" resultMap="orgResult" />
+        <association property="fixItem"    column="FIX_ITEM_ID" javaType="RlInspecItem" resultMap="fixItemResult" />
+    </resultMap>
+
+    <resultMap id="fixItemResult" type="RlInspecItem">
+        <result property="itemId"    column="FIX_ITEM_ID"    />
+        <result property="itemCode"    column="FIX_ITEM_CODE"    />
+        <result property="itemName"    column="FIX_ITEM_NAME"    />
+        <result property="itemPrice"    column="FIX_ITEM_PRICE"    />
+    </resultMap>
+
+    <resultMap id="orgResult" type="RlSysOrg">
+        <id     property="orgId"   column="oid"     />
+        <result property="parentId" column="parent_id"   />
+        <result property="orgName" column="org_name"   />
+        <result property="orderNum" column="order_num"   />
+        <result property="discount" column="discount"   />
+        <result property="leader"   column="leader"      />
+        <result property="status"   column="org_status" />
+    </resultMap>
+
+    <sql id="selectRlInspecItemVo">
+        select i.ITEM_ID, i.ITEM_CODE, i.ITEM_NAME, i.MNEMONIC_CODE, i.ORG_ID, i.ENABLE, i.ITEM_PRICE, i.REMARK, i.CREATE_BY, i.CREATE_TIME, i.UPDATE_BY, i.UPDATE_TIME,
+               o.org_id as oid, o.parent_id, o.org_name, o.order_num, o.discount, o.leader, o.status,
+               fi.ITEM_ID as FIX_ITEM_ID, fi.ITEM_CODE as FIX_ITEM_CODE, fi.ITEM_NAME as FIX_ITEM_NAME, fi.ITEM_PRICE as FIX_ITEM_PRICE
+        from RL_INSPEC_ITEM i
+            left join RL_SYS_ORG o on i.ORG_ID = o.ORG_ID
+            left join RL_INSPEC_ITEM fi on i.FIX_ITEM_ID = fi.ITEM_ID
+    </sql>
+
+    <select id="selectRlInspecItemList" parameterType="RlInspecItem" resultMap="RlInspecItemResult">
+        <include refid="selectRlInspecItemVo"/>
+        <where>  
+            <if test="itemCode != null  and itemCode != ''"> and i.ITEM_CODE = #{itemCode}</if>
+            <if test="itemName != null  and itemName != ''"> and i.ITEM_NAME like concat('%', #{itemName}, '%')</if>
+            <if test="mnemonicCode != null  and mnemonicCode != ''"> and i.MNEMONIC_CODE = #{mnemonicCode}</if>
+            <if test="orgId != null  and orgId != ''"> and i.ORG_ID = #{orgId}</if>
+            <if test="enable != null  and enable != ''"> and i.ENABLE = #{enable}</if>
+            <if test="itemPrice != null "> and i.ITEM_PRICE = #{itemPrice}</if>
+            <if test="remark != null  and remark != ''"> and i.REMARK = #{remark}</if>
+            <if test="createBy != null  and createBy != ''"> and i.CREATE_BY = #{createBy}</if>
+            <if test="createTime != null "> and i.CREATE_TIME = #{createTime}</if>
+            <if test="updateBy != null  and updateBy != ''"> and i.UPDATE_BY = #{updateBy}</if>
+            <if test="updateTime != null "> and i.UPDATE_TIME = #{updateTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectRlInspecItemById" parameterType="String" resultMap="RlInspecItemResult">
+        <include refid="selectRlInspecItemVo"/>
+        where i.ITEM_ID = #{itemId}
+    </select>
+        
+    <insert id="insertRlInspecItem" parameterType="RlInspecItem">
+        insert into RL_INSPEC_ITEM
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="itemId != null and itemId != ''">ITEM_ID,</if>
+            <if test="itemCode != null and itemCode != ''">ITEM_CODE,</if>
+            <if test="itemName != null and itemName != ''">ITEM_NAME,</if>
+            <if test="fixItemId != null and fixItemId != ''">FIX_ITEM_ID,</if>
+            <if test="mnemonicCode != null">MNEMONIC_CODE,</if>
+            <if test="orgId != null">ORG_ID,</if>
+            <if test="enable != null">ENABLE,</if>
+            <if test="itemPrice != null">ITEM_PRICE,</if>
+            <if test="remark != null">REMARK,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="itemId != null and itemId != ''">#{itemId},</if>
+            <if test="itemCode != null and itemCode != ''">#{itemCode},</if>
+            <if test="itemName != null and itemName != ''">#{itemName},</if>
+            <if test="fixItemId != null and fixItemId != ''">#{fixItemId},</if>
+            <if test="mnemonicCode != null">#{mnemonicCode},</if>
+            <if test="orgId != null">#{orgId},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="itemPrice != null">#{itemPrice},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRlInspecItem" parameterType="RlInspecItem">
+        update RL_INSPEC_ITEM
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="itemCode != null and itemCode != ''">ITEM_CODE = #{itemCode},</if>
+            <if test="itemName != null and itemName != ''">ITEM_NAME = #{itemName},</if>
+            <if test="fixItemId != null and fixItemId != ''">FIX_ITEM_ID = #{fixItemId},</if>
+            <if test="mnemonicCode != null">MNEMONIC_CODE = #{mnemonicCode},</if>
+            <if test="orgId != null">ORG_ID = #{orgId},</if>
+            <if test="enable != null">ENABLE = #{enable},</if>
+            <if test="itemPrice != null">ITEM_PRICE = #{itemPrice},</if>
+            <if test="remark != null">REMARK = #{remark},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+        </trim>
+        where ITEM_ID = #{itemId}
+    </update>
+
+    <delete id="deleteRlInspecItemById" parameterType="String">
+        delete from RL_INSPEC_ITEM where ITEM_ID = #{itemId}
+    </delete>
+
+    <delete id="deleteRlInspecItemByIds" parameterType="String">
+        delete from RL_INSPEC_ITEM where ITEM_ID in 
+        <foreach item="itemId" collection="array" open="(" separator="," close=")">
+            #{itemId}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rlis.system.mapper.RlSysRoleMenuMapper">
+
+	<resultMap type="RlSysRoleMenu" id="RlSysRoleMenuResult">
+		<result property="roleId"     column="role_id"      />
+		<result property="menuId"     column="menu_id"      />
+	</resultMap>
+
+	<delete id="deleteRoleMenuByRoleId" parameterType="Long">
+		delete from rl_sys_role_menu where role_id=#{roleId}
+	</delete>
+	
+	<select id="selectCountRoleMenuByMenuId" resultType="Integer">
+	    select count(1) from rl_sys_role_menu where menu_id=#{menuId}  
+	</select>
+	
+	<delete id="deleteRoleMenu" parameterType="Long">
+ 		delete from rl_sys_role_menu where role_id in
+ 		<foreach collection="array" item="roleId" open="(" separator="," close=")">
+ 			#{roleId}
+        </foreach> 
+ 	</delete>
+	
+	<insert id="batchRoleMenu">
+		insert into rl_sys_role_menu(role_id, menu_id)
+		<foreach item="item" index="index" collection="list" separator="union all">
+			(select #{item.roleId},#{item.menuId} from dual)
+		</foreach>
+	</insert>
+
+	<insert id="insertRoleMenu" parameterType="RlSysRoleMenu">
+		insert into rl_sys_role_menu(role_id, menu_id)
+		values (#{roleId},#{menuId})
+	</insert>
+	
+</mapper> 

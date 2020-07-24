@@ -1,0 +1,13 @@
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\domain\RlGenTable.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\mapper\RlGenTableMapper.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\controller\GenController.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\mapper\RlGenTableColumnMapper.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\config\GenConfig.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\domain\RlGenTableColumn.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\service\IRlGenTableColumnService.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\util\GenUtils.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\service\impl\GenTableColumnServiceImpl.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\util\VelocityInitializer.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\service\IRlGenTableService.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\util\VelocityUtils.java
+D:\idea project\RegionLis\rlis-generator\src\main\java\com\rlis\generator\service\impl\GenTableServiceImpl.java

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rlis.inspection.mapper.RlInspecRequisitionMapper">
+    
+    <resultMap type="RlInspecRequisition" id="RlInspecRequisitionResult">
+        <result property="id"    column="ID"    />
+        <result property="appNo"    column="APP_NO"    />
+        <result property="appType"    column="APP_TYPE"    />
+        <result property="appTime"    column="APP_TIME"    />
+        <result property="appStatus"    column="APP_STATUS"    />
+        <result property="appOrgCode"    column="APP_ORG_CODE"    />
+        <result property="appOrgName"    column="APP_ORG_NAME"    />
+        <result property="appDocCode"    column="APP_DOC_CODE"    />
+        <result property="appDocName"    column="APP_DOC_NAME"    />
+        <result property="appOrgPhone"    column="APP_ORG_PHONE"    />
+        <result property="appAmount"    column="APP_AMOUNT"    />
+        <result property="serviceOrgCode"    column="SERVICE_ORG_CODE"    />
+        <result property="serviceOrgName"    column="SERVICE_ORG_NAME"    />
+        <result property="patientId"    column="PATIENT_ID"    />
+        <result property="patientName"    column="PATIENT_NAME"    />
+        <result property="patientIdno"    column="PATIENT_IDNO"    />
+        <result property="patientAge"    column="PATIENT_AGE"    />
+        <result property="patientSex"    column="PATIENT_SEX"    />
+        <result property="patientPhone"    column="PATIENT_PHONE"    />
+        <result property="patientType"    column="PATIENT_TYPE"    />
+        <result property="patientCode"    column="PATIENT_CODE"    />
+        <result property="patientDiagnosis"    column="PATIENT_DIAGNOSIS"    />
+        <result property="createBy"    column="CREATE_BY"    />
+        <result property="createTime"    column="CREATE_TIME"    />
+        <result property="updateBy"    column="UPDATE_BY"    />
+        <result property="updateTime"    column="UPDATE_TIME"    />
+    </resultMap>
+
+    <resultMap id="RlInspecRequisitionRlInspecRequisitionItemsResult" type="RlInspecRequisition" extends="RlInspecRequisitionResult">
+        <collection property="rlInspecRequisitionItemsList" notNullColumn="ID" javaType="java.util.List" resultMap="RlInspecRequisitionItemsResult" />
+    </resultMap>
+
+    <resultMap type="RlInspecRequisitionItems" id="RlInspecRequisitionItemsResult">
+        <result property="id"    column="ID"    />
+        <result property="requisitionId"    column="REQUISITION_ID"    />
+        <result property="itemCode"    column="ITEM_CODE"    />
+        <result property="itemName"    column="ITEM_NAME"    />
+        <result property="itemPrice"    column="ITEM_PRICE"    />
+    </resultMap>
+
+    <sql id="selectRlInspecRequisitionVo">
+        select ID, APP_NO, APP_TYPE, APP_TIME, APP_STATUS, APP_ORG_CODE, APP_ORG_NAME, APP_DOC_CODE, APP_DOC_NAME, APP_ORG_PHONE, SERVICE_ORG_CODE, SERVICE_ORG_NAME, PATIENT_ID, PATIENT_NAME, PATIENT_IDNO, PATIENT_AGE, PATIENT_SEX, PATIENT_PHONE, PATIENT_TYPE, PATIENT_CODE, PATIENT_DIAGNOSIS, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME from RL_INSPEC_REQUISITION
+    </sql>
+
+    <select id="selectRlInspecRequisitionList" parameterType="RlInspecRequisition" resultMap="RlInspecRequisitionResult">
+        <include refid="selectRlInspecRequisitionVo"/>
+        <where>  
+            <if test="appNo != null  and appNo != ''"> and APP_NO = #{appNo}</if>
+            <if test="appStatus != null "> and APP_STATUS = #{appStatus}</if>
+            <if test="appOrgName != null  and appOrgName != ''"> and APP_ORG_NAME like concat('%', #{appOrgName}, '%')</if>
+            <if test="appOrgPhone != null  and appOrgPhone != ''"> and APP_ORG_PHONE = #{appOrgPhone}</if>
+            <if test="serviceOrgName != null  and serviceOrgName != ''"> and SERVICE_ORG_NAME like concat('%', #{serviceOrgName}, '%')</if>
+            <if test="patientName != null  and patientName != ''"> and PATIENT_NAME like concat('%', #{patientName}, '%')</if>
+        </where>
+    </select>
+    
+    <select id="selectRlInspecRequisitionById" parameterType="String" resultMap="RlInspecRequisitionRlInspecRequisitionItemsResult">
+        select a.ID, a.APP_NO, a.APP_TYPE, a.APP_TIME, a.APP_STATUS, a.APP_ORG_CODE, a.APP_ORG_NAME, a.APP_DOC_CODE, a.APP_DOC_NAME, a.APP_ORG_PHONE, a.APP_AMOUNT, a.SERVICE_ORG_CODE, a.SERVICE_ORG_NAME, a.PATIENT_ID, a.PATIENT_NAME, a.PATIENT_IDNO, a.PATIENT_AGE, a.PATIENT_SEX, a.PATIENT_PHONE, a.PATIENT_TYPE, a.PATIENT_CODE, a.PATIENT_DIAGNOSIS, a.CREATE_BY, a.CREATE_TIME, a.UPDATE_BY, a.UPDATE_TIME,
+            b.ID, b.REQUISITION_ID, b.ITEM_CODE, b.ITEM_NAME, b.ITEM_PRICE
+        from RL_INSPEC_REQUISITION a
+        left join RL_INSPEC_REQUISITION_ITEMS b on b.REQUISITION_ID = a.ID
+        where a.ID = #{id}
+    </select>
+        
+    <insert id="insertRlInspecRequisition" parameterType="RlInspecRequisition">
+        insert into RL_INSPEC_REQUISITION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="appNo != null">APP_NO,</if>
+            <if test="appType != null">APP_TYPE,</if>
+            <if test="appTime != null">APP_TIME,</if>
+            <if test="appStatus != null">APP_STATUS,</if>
+            <if test="appOrgCode != null">APP_ORG_CODE,</if>
+            <if test="appOrgName != null">APP_ORG_NAME,</if>
+            <if test="appDocCode != null">APP_DOC_CODE,</if>
+            <if test="appDocName != null">APP_DOC_NAME,</if>
+            <if test="appOrgPhone != null">APP_ORG_PHONE,</if>
+            <if test="appAmount != null">APP_AMOUNT,</if>
+            <if test="serviceOrgCode != null">SERVICE_ORG_CODE,</if>
+            <if test="serviceOrgName != null">SERVICE_ORG_NAME,</if>
+            <if test="patientId != null">PATIENT_ID,</if>
+            <if test="patientName != null and patientName != ''">PATIENT_NAME,</if>
+            <if test="patientIdno != null">PATIENT_IDNO,</if>
+            <if test="patientAge != null and patientAge != ''">PATIENT_AGE,</if>
+            <if test="patientSex != null and patientSex != ''">PATIENT_SEX,</if>
+            <if test="patientPhone != null">PATIENT_PHONE,</if>
+            <if test="patientType != null and patientType != ''">PATIENT_TYPE,</if>
+            <if test="patientCode != null">PATIENT_CODE,</if>
+            <if test="patientDiagnosis != null">PATIENT_DIAGNOSIS,</if>
+            <if test="createBy != null">CREATE_BY,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="updateBy != null">UPDATE_BY,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="appNo != null">#{appNo},</if>
+            <if test="appType != null">#{appType},</if>
+            <if test="appTime != null">#{appTime},</if>
+            <if test="appStatus != null">#{appStatus},</if>
+            <if test="appOrgCode != null">#{appOrgCode},</if>
+            <if test="appOrgName != null">#{appOrgName},</if>
+            <if test="appDocCode != null">#{appDocCode},</if>
+            <if test="appDocName != null">#{appDocName},</if>
+            <if test="appOrgPhone != null">#{appOrgPhone},</if>
+            <if test="appAmount != null">#{appAmount},</if>
+            <if test="serviceOrgCode != null">#{serviceOrgCode},</if>
+            <if test="serviceOrgName != null">#{serviceOrgName},</if>
+            <if test="patientId != null">#{patientId},</if>
+            <if test="patientName != null and patientName != ''">#{patientName},</if>
+            <if test="patientIdno != null">#{patientIdno},</if>
+            <if test="patientAge != null and patientAge != ''">#{patientAge},</if>
+            <if test="patientSex != null and patientSex != ''">#{patientSex},</if>
+            <if test="patientPhone != null">#{patientPhone},</if>
+            <if test="patientType != null and patientType != ''">#{patientType},</if>
+            <if test="patientCode != null">#{patientCode},</if>
+            <if test="patientDiagnosis != null">#{patientDiagnosis},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateRlInspecRequisition" parameterType="RlInspecRequisition">
+        update RL_INSPEC_REQUISITION
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="appNo != null">APP_NO = #{appNo},</if>
+            <if test="appType != null">APP_TYPE = #{appType},</if>
+            <if test="appTime != null">APP_TIME = #{appTime},</if>
+            <if test="appStatus != null">APP_STATUS = #{appStatus},</if>
+            <if test="appOrgCode != null">APP_ORG_CODE = #{appOrgCode},</if>
+            <if test="appOrgName != null">APP_ORG_NAME = #{appOrgName},</if>
+            <if test="appDocCode != null">APP_DOC_CODE = #{appDocCode},</if>
+            <if test="appDocName != null">APP_DOC_NAME = #{appDocName},</if>
+            <if test="appOrgPhone != null">APP_ORG_PHONE = #{appOrgPhone},</if>
+            <if test="appAmount != null">APP_AMOUNT = #{appAmount},</if>
+            <if test="serviceOrgCode != null">SERVICE_ORG_CODE = #{serviceOrgCode},</if>
+            <if test="serviceOrgName != null">SERVICE_ORG_NAME = #{serviceOrgName},</if>
+            <if test="patientId != null">PATIENT_ID = #{patientId},</if>
+            <if test="patientName != null and patientName != ''">PATIENT_NAME = #{patientName},</if>
+            <if test="patientIdno != null">PATIENT_IDNO = #{patientIdno},</if>
+            <if test="patientAge != null and patientAge != ''">PATIENT_AGE = #{patientAge},</if>
+            <if test="patientSex != null and patientSex != ''">PATIENT_SEX = #{patientSex},</if>
+            <if test="patientPhone != null">PATIENT_PHONE = #{patientPhone},</if>
+            <if test="patientType != null and patientType != ''">PATIENT_TYPE = #{patientType},</if>
+            <if test="patientCode != null">PATIENT_CODE = #{patientCode},</if>
+            <if test="patientDiagnosis != null">PATIENT_DIAGNOSIS = #{patientDiagnosis},</if>
+            <if test="createBy != null">CREATE_BY = #{createBy},</if>
+            <if test="createTime != null">CREATE_TIME = #{createTime},</if>
+            <if test="updateBy != null">UPDATE_BY = #{updateBy},</if>
+            <if test="updateTime != null">UPDATE_TIME = #{updateTime},</if>
+        </trim>
+        where ID = #{id}
+    </update>
+
+    <delete id="deleteRlInspecRequisitionById" parameterType="String">
+        delete from RL_INSPEC_REQUISITION where ID = #{id}
+    </delete>
+
+    <delete id="deleteRlInspecRequisitionByIds" parameterType="String">
+        delete from RL_INSPEC_REQUISITION where ID in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <delete id="deleteRlInspecRequisitionItemsByRequisitionIds" parameterType="String">
+        delete from RL_INSPEC_REQUISITION_ITEMS where REQUISITION_ID in 
+        <foreach item="requisitionId" collection="array" open="(" separator="," close=")">
+            #{requisitionId}
+        </foreach>
+    </delete>
+
+    <delete id="deleteRlInspecRequisitionItemsByRequisitionId" parameterType="Long">
+        delete from RL_INSPEC_REQUISITION_ITEMS where REQUISITION_ID = #{requisitionId}
+    </delete>
+
+    <insert id="batchRlInspecRequisitionItems">
+        insert into RL_INSPEC_REQUISITION_ITEMS( ID, REQUISITION_ID, ITEM_CODE, ITEM_NAME, ITEM_PRICE) values
+		<foreach item="item" index="index" collection="list" separator=",">
+            ( #{item.id}, #{item.requisitionId}, #{item.itemCode}, #{item.itemName}, #{item.itemPrice})
+        </foreach>
+    </insert>
+
+</mapper>

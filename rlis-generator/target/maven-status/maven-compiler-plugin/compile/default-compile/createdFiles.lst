@@ -1,0 +1,13 @@
+com\rlis\generator\mapper\RlGenTableColumnMapper.class
+com\rlis\generator\controller\GenController.class
+com\rlis\generator\service\impl\GenTableServiceImpl.class
+com\rlis\generator\service\IRlGenTableColumnService.class
+com\rlis\generator\config\GenConfig.class
+com\rlis\generator\domain\RlGenTable.class
+com\rlis\generator\service\IRlGenTableService.class
+com\rlis\generator\util\VelocityInitializer.class
+com\rlis\generator\service\impl\GenTableColumnServiceImpl.class
+com\rlis\generator\domain\RlGenTableColumn.class
+com\rlis\generator\util\GenUtils.class
+com\rlis\generator\util\VelocityUtils.class
+com\rlis\generator\mapper\RlGenTableMapper.class
