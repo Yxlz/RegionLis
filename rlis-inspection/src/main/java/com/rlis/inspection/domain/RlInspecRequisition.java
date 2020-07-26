@@ -33,7 +33,7 @@ public class RlInspecRequisition extends BaseEntity
     private String appTime;
 
     /** 状态 */
-    @Excel(name = "状态")
+    @Excel(name = "状态", readConverterExp = "0=编辑,1=提交,2=未知")
     private Integer appStatus;
 
     /** 申请机构编码 */
@@ -54,6 +54,7 @@ public class RlInspecRequisition extends BaseEntity
     private String appOrgPhone;
 
     /** 申请单总金额 */
+    @Excel(name = "申请项目总金额")
     private BigDecimal appAmount;
 
     /** 服务机构编码 */
@@ -79,7 +80,7 @@ public class RlInspecRequisition extends BaseEntity
     private String patientAge;
 
     /** 性别 */
-    @Excel(name = "性别")
+    @Excel(name = "性别", readConverterExp = "0=男,1=女,2=未知")
     private String patientSex;
 
     /** 电话 */
@@ -87,7 +88,7 @@ public class RlInspecRequisition extends BaseEntity
     private String patientPhone;
 
     /** 就诊类型 */
-    @Excel(name = "就诊类型")
+    @Excel(name = "就诊类型", readConverterExp = "IP=住院,OP=门诊")
     private String patientType;
 
     /** 就诊号 */

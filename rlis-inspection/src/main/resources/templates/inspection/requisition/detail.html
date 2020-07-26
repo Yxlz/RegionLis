@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:include="include :: header('修改检验申请')"/>
+</head>
+<body class="white-bg">
+<div class="main-content">
+    <form class="form-horizontal" id="form-requisition-add" th:object="${rlInspecRequisition}">
+        <h4 class="form-header h4">申请单信息</h4>
+        <input name="id" th:field="*{id}" type="hidden">
+        <input type="hidden" class="form-control" id="suggest-standarditems_d">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">患者姓名：</label>
+                    <div class="col-sm-8">
+                        <input name="patientName" th:field="*{patientName}" class="form-control" type="text"
+                               maxlength="10">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">身份证号：</label>
+                    <div class="col-sm-8">
+                        <input name="patientIdno" th:field="*{patientIdno}" class="form-control" type="text"
+                               maxlength="18">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">患者性别：</label>
+                    <div class="col-sm-8">
+                        <select name="patientSex" class="form-control m-b"
+                                th:with="type=${@dict.getType('sys_user_sex')}">
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"
+                                    th:field="*{patientSex}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">患者年龄：</label>
+                    <div class="col-sm-8">
+                        <input name="patientAge" th:field="*{patientAge}" class="form-control" type="text"
+                               maxlength="10">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">患者电话：</label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <input id="patientPhone" name="patientPhone" th:field="*{patientPhone}" class="form-control"
+                                   type="text" maxlength="11">
+                            <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">就诊类型：</label>
+                    <div class="col-sm-8">
+                        <select name="patientType" class="form-control m-b"
+                                th:with="type=${@dict.getType('inspection_patient_type')}">
+                            <option th:each="dict : ${type}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"
+                                    th:field="*{appType}"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">申请单号：</label>
+                    <div class="col-sm-8">
+                            <input id="appNo" name="appNo" th:field="*{appNo}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">申请单类型：</label>
+                    <div class="col-sm-8">
+                            <input id="appType" name="appType" th:field="*{appType}" class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">申请机构：</label>
+                    <div class="col-sm-8">
+                            <input id="appOrgName" name="appOrgName" th:field="*{appOrgName}" class="form-control"
+                                   type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">服务机构：</label>
+                    <div class="col-sm-8">
+                            <input id="serviceOrgName" name="serviceOrgName" th:field="*{serviceOrgName}"
+                                   class="form-control" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">申请医生：</label>
+                    <div class="col-sm-8">
+                            <input id="appDocName" name="appDocName" th:field="*{appDocName}" class="form-control"
+                                   type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">病人号：</label>
+                    <div class="col-sm-8">
+                            <input id="patientCode" name="patientCode" th:field="*{patientCode}" class="form-control"
+                                   type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">总金额：</label>
+                    <div class="col-sm-8">
+                            <input id="appAmount" name="appAmount" th:field="*{appAmount}" class="form-control"
+                                   type="text">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label class="col-sm-4 control-label">初步诊断：</label>
+                    <div class="col-sm-8">
+                        <textarea name="patientDiagnosis" th:field="*{patientDiagnosis}" maxlength="500"
+                                  class="form-control" rows="1"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h4 class="form-header h4">申请单项目信息</h4>
+        <div class="row">
+            <div class="col-sm-12">
+                <!--<button type="button" class="btn btn-white btn-sm" onclick="addColumn()"><i class="fa fa-plus"> 增加</i></button>-->
+                <!--<button type="button" class="btn btn-white btn-sm" onclick="sub.delColumn()"><i class="fa fa-minus"> 删除</i></button>-->
+                <div class="col-sm-12 select-table table-striped">
+                    <table id="bootstrap-table"></table>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!--<div class="row">
+    <div class="col-sm-offset-5 col-sm-10">
+        <button type="button" class="btn btn-sm btn-danger" onclick="closeItem()"><i class="fa fa-reply-all"></i>关 闭
+        </button>
+    </div>
+</div>-->
+<th:block th:include="include :: footer"/>
+<th:block th:include="include :: bootstrap-suggest-js"/>
+<script th:inline="javascript">
+    var prefix = ctx + "inspection/requisition";
+    $("#form-requisition-edit").validate({
+        focusCleanup: true
+    });
+
+    var testBsSuggest = $("#suggest-standarditems_d").bsSuggest({
+        url: ctx + "inspection/item/fixItemModel",
+        effectiveFields: ["itemCode", "itemName", "itemPrice", "org.discount"],
+        effectiveFieldsAlias: {itemCode: "项目代码", itemName: "项目名称", itemPrice: "项目金额"},
+        clearable: true,
+        idField: "itemId",
+        keyField: "itemName"
+    }).on('onDataRequestSuccess', function (e, result) {
+        // console.log('onDataRequestSuccess: ', result);
+        for (var i = 0; i < result.length; i++) {
+            var count = $("#" + table.options.id).bootstrapTable('getData').length;
+            sub.editColumn();
+
+            $("#" + table.options.id).bootstrapTable('insertRow', {
+                index: count,
+                row: {
+                    index: $.table.serialNumber(count),
+                    itemCode: result[i].itemCode,
+                    itemName: result[i].itemName,
+                    itemPrice: result[i].itemPrice
+                }
+            });
+        }
+    }).on('onSetSelectValue', function (e, selectedData, selectedRawData) {
+        var count = $("#" + table.options.id).bootstrapTable('getData').length;
+        sub.editColumn();
+
+        $("#" + table.options.id).bootstrapTable('insertRow', {
+            index: count,
+            row: {
+                index: $.table.serialNumber(count),
+                itemCode: selectedRawData.itemCode,
+                itemName: selectedRawData.itemName,
+                itemPrice: selectedRawData.itemPrice
+            }
+        });
+    }).on('onUnsetSelectValue', function (e) {
+
+    });
+
+    function submitHandler() {
+        if ($.validate.form()) {
+            $.operate.save(prefix + "/edit", $('#form-requisition-edit').serialize());
+        }
+    }
+
+    $(function () {
+        var options = {
+            data: [[${rlInspecRequisition.rlInspecRequisitionItemsList}]],
+            pagination: false,
+            showSearch: false,
+            showRefresh: false,
+            showToggle: false,
+            showColumns: false,
+            columns: [{
+                checkbox: true
+            },
+                {
+                    field: 'index',
+                    align: 'center',
+                    title: "序号",
+                    formatter: function (value, row, index) {
+                        var columnIndex = $.common.sprintf("<input type='hidden' name='index' value='%s'>", $.table.serialNumber(index));
+                        return columnIndex + $.table.serialNumber(index);
+                    }
+                },
+                {
+                    field: 'itemCode',
+                    align: 'center',
+                    title: '申请项目编码',
+                    formatter: function (value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemCode' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'itemName',
+                    align: 'center',
+                    title: '申请项目名称',
+                    formatter: function (value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemName' value='%s'>", index, value);
+                        return html;
+                    }
+                },
+                {
+                    field: 'itemPrice',
+                    align: 'center',
+                    title: '项目价格',
+                    formatter: function (value, row, index) {
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemPrice' value='%s'>", index, value);
+                        return html;
+                    }
+
+                }]
+        };
+        $.table.init(options);
+    });
+
+</script>
+</body>
+</html>

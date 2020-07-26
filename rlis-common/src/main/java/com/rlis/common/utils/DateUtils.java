@@ -156,4 +156,24 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         // long sec = diff % nd % nh % nm / ns;
         return day + "天" + hour + "小时" + min + "分钟";
     }
+
+    /**
+     * 通过身份证号 获取出生日期
+     * @return
+     */
+    public static String getDateOfBirth(String idcard){
+        if (idcard==null) {
+            return "";
+        }
+        if (idcard.equals("")||idcard.length()<18) {
+            return "";
+        }
+        StringBuffer sb = new StringBuffer();
+        sb.append(idcard, 6, 10);
+        sb.append("-");
+        sb.append(idcard, 10, 12);
+        sb.append("-");
+        sb.append(idcard, 12, 14);
+        return sb.toString();
+    }
 }

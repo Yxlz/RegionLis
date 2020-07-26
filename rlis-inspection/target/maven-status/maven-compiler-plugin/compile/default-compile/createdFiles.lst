@@ -1,9 +1,0 @@
-com\rlis\inspection\service\IRlInspecItemService.class
-com\rlis\inspection\service\impl\RlInspecRequisitionServiceImpl.class
-com\rlis\inspection\service\IRlInspecRequisitionService.class
-com\rlis\inspection\domain\RlInspecItem.class
-com\rlis\inspection\domain\RlInspecRequisitionItems.class
-com\rlis\inspection\mapper\RlInspecItemMapper.class
-com\rlis\inspection\domain\RlInspecRequisition.class
-com\rlis\inspection\service\impl\RlInspecItemServiceImpl.class
-com\rlis\inspection\mapper\RlInspecRequisitionMapper.class

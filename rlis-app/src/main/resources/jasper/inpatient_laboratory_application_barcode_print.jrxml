@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inpatient_laboratory_application_barcode_print" pageWidth="136" pageHeight="85" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="136" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryWithPageHeaderAndFooter="true" uuid="059d30ef-dd0b-4dc1-8a4e-d8313b999f36">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<property name="ireport.zoom" value="1.696390473489942"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<parameter name="in_laboratory_application_id" class="java.lang.String"/>
+	<parameter name="patient_name" class="java.lang.String"/>
+	<parameter name="patient_sex" class="java.lang.String"/>
+	<parameter name="pat_age" class="java.lang.String"/>
+	<parameter name="pid" class="java.lang.String"/>
+	<parameter name="lab_class_name" class="java.lang.String"/>
+	<parameter name="pat_type" class="java.lang.String"/>
+	<parameter name="item" class="java.lang.String"/>
+	<parameter name="sample_source_from" class="java.lang.String"/>
+	<parameter name="patient_code" class="java.lang.String"/>
+	<parameter name="print_time" class="java.lang.String"/>
+	<parameter name="speciman_name" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="85" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="5f813bfc-af9b-46b0-918a-b8b21e2474b4" key="barcode-1" mode="Opaque" x="0" y="4" width="115" height="26" forecolor="#000000" backcolor="#FFFFFF"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code128C" drawText="false" checksumRequired="false" barWidth="10" barHeight="273">
+					<jr:codeExpression><![CDATA[$P{pid}]]></jr:codeExpression>
+					<jr:applicationIdentifierExpression><![CDATA[$P{pid}]]></jr:applicationIdentifierExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement uuid="518b8358-19c1-4117-86eb-7ffe79626340" x="51" y="30" width="85" height="10"/>
+				<box leftPadding="2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{patient_name}+" "+$P{patient_sex}+" "+$P{pat_age}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e5011d14-9d22-437b-b981-c10592b4c877" x="2" y="30" width="62" height="11"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pid}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68a2fa5e-c220-4063-ae3f-7ba6d71b03c9" x="109" y="4" width="25" height="11"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lab_class_name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="451c258a-e61a-44c8-b4d0-f8b81a0511af" x="109" y="17" width="25" height="11"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pat_type}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4c05285b-3d9c-4426-aba1-154ad72af684" x="2" y="41" width="97" height="12"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{item}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2b0d7209-34ed-4da7-ae2d-91d9de42ebb8" x="2" y="54" width="75" height="12"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sample_source_from}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b41e7a9e-65fa-4011-be1f-9f2c28fcb750" x="76" y="54" width="60" height="12"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{patient_code}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4c64f892-a84a-4aa0-982b-8a8696a5ca3d" x="3" y="67" width="131" height="18"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA["申请时间："+$P{print_time}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e2d5f60e-cd8f-40b8-b953-aeb1b7919ab1" x="99" y="41" width="35" height="13"/>
+				<textElement>
+					<font fontName="宋体" size="8" pdfFontName="STSong-Light" pdfEncoding="UniGB-UCS2-H"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{speciman_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

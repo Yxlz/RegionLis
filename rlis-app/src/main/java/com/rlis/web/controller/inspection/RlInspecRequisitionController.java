@@ -3,12 +3,17 @@ package com.rlis.web.controller.inspection;
 import com.rlis.common.annotation.Log;
 import com.rlis.common.core.controller.BaseController;
 import com.rlis.common.core.domain.AjaxResult;
+import com.rlis.common.core.page.PageDomain;
 import com.rlis.common.core.page.TableDataInfo;
+import com.rlis.common.core.page.TableSupport;
 import com.rlis.common.enums.BusinessType;
 import com.rlis.common.utils.DateUtils;
+import com.rlis.common.utils.UUIDGenerator;
 import com.rlis.common.utils.poi.ExcelUtil;
 import com.rlis.core.util.ShiroUtils;
 import com.rlis.inspection.domain.RlInspecRequisition;
+import com.rlis.inspection.domain.RlInspecRequisitionBarcode;
+import com.rlis.inspection.service.IRlInspecRequisitionBarcodeService;
 import com.rlis.inspection.service.IRlInspecRequisitionService;
 import com.rlis.system.domain.RlSysUser;
 import com.rlis.system.service.IRlSysUserService;
@@ -20,7 +25,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 /**
  * 检验申请Controller
@@ -39,6 +43,9 @@ public class RlInspecRequisitionController extends BaseController
 
     @Resource
     private IRlSysUserService rlSysUserService;
+
+    @Resource
+    private IRlInspecRequisitionBarcodeService barcodeService;
 
     @RequiresPermissions("inspection:requisition:view")
     @GetMapping()
@@ -70,7 +77,7 @@ public class RlInspecRequisitionController extends BaseController
     public AjaxResult export(RlInspecRequisition rlInspecRequisition)
     {
         List<RlInspecRequisition> list = rlInspecRequisitionService.selectRlInspecRequisitionList(rlInspecRequisition);
-        ExcelUtil<RlInspecRequisition> util = new ExcelUtil<RlInspecRequisition>(RlInspecRequisition.class);
+        ExcelUtil<RlInspecRequisition> util = new ExcelUtil<>(RlInspecRequisition.class);
         return util.exportExcel(list, "requisition");
     }
 
@@ -92,7 +99,7 @@ public class RlInspecRequisitionController extends BaseController
     @ResponseBody
     public AjaxResult addSave(RlInspecRequisition rlInspecRequisition)
     {   rlInspecRequisition.setCreateTime(DateUtils.getNowDate());
-        rlInspecRequisition.setId(UUID.randomUUID().toString().replace("-",""));
+        rlInspecRequisition.setId(UUIDGenerator.getUUID());
         rlInspecRequisition.setCreateBy(ShiroUtils.getLoginName());
         RlSysUser user = rlSysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
         rlInspecRequisition.setAppDocCode(user.getLoginName());
@@ -100,6 +107,9 @@ public class RlInspecRequisitionController extends BaseController
         rlInspecRequisition.setAppOrgCode(user.getOrg().getOrgId()+"");
         rlInspecRequisition.setAppOrgName(user.getOrg().getOrgName());
         rlInspecRequisition.setAppOrgPhone(user.getOrg().getPhone());
+        rlInspecRequisition.setPatientId(rlInspecRequisition.getPatientIdno());
+        rlInspecRequisition.setAppStatus(0);
+        rlInspecRequisition.setPatientCode(DateUtils.dateTime()+new Random().nextInt(9999));
         rlInspecRequisition.setAppType("REGIONLIS");
         rlInspecRequisition.setAppTime(DateUtils.getTime());
         rlInspecRequisition.setAppNo(DateUtils.dateTimeNow()+new Random().nextInt(9999));
@@ -118,6 +128,17 @@ public class RlInspecRequisitionController extends BaseController
     }
 
     /**
+     * 修改检验申请
+     */
+    @GetMapping("/detail/{id}")
+    public String detail(@PathVariable("id") String id, ModelMap mmap)
+    {
+        RlInspecRequisition rlInspecRequisition = rlInspecRequisitionService.selectRlInspecRequisitionById(id);
+        mmap.put("rlInspecRequisition", rlInspecRequisition);
+        return prefix + "/detail";
+    }
+
+    /**
      * 修改保存检验申请
      */
     @RequiresPermissions("inspection:requisition:edit")
@@ -126,6 +147,8 @@ public class RlInspecRequisitionController extends BaseController
     @ResponseBody
     public AjaxResult editSave(RlInspecRequisition rlInspecRequisition)
     {
+        rlInspecRequisition.setUpdateBy(ShiroUtils.getLoginName());
+        rlInspecRequisition.setUpdateTime(DateUtils.getNowDate());
         return toAjax(rlInspecRequisitionService.updateRlInspecRequisition(rlInspecRequisition));
     }
 
@@ -139,5 +162,52 @@ public class RlInspecRequisitionController extends BaseController
     public AjaxResult remove(String ids)
     {
         return toAjax(rlInspecRequisitionService.deleteRlInspecRequisitionByIds(ids));
+    }
+
+    /**
+     * 提交检验申请（打印条码）
+     */
+    @RequiresPermissions("inspection:requisition:edit")
+    @Log(title = "提交申请", businessType = BusinessType.UPDATE)
+    @PostMapping("/commit")
+    @ResponseBody
+    public AjaxResult commit(String id)
+    {
+        RlInspecRequisition rlInspecRequisition = rlInspecRequisitionService.selectRlInspecRequisitionById(id);
+        try {
+            rlInspecRequisitionService.commitRequisition(rlInspecRequisition);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return AjaxResult.error(e.getMessage());
+        }
+        return AjaxResult.success();
+//        return toAjax(rlInspecRequisitionService.updateRlInspecRequisition(rlInspecRequisition));
+    }
+
+    /**
+     * 查询条码
+     */
+    @PostMapping("/barcode")
+    @ResponseBody
+    public TableDataInfo list(RlInspecRequisitionBarcode barcode)
+    {
+        TableDataInfo rspData = new TableDataInfo();
+        List<RlInspecRequisitionBarcode> barcodeList = barcodeService.getBarcodesByRequisitionId(barcode.getRequisitionId());
+        PageDomain pageDomain = TableSupport.buildPageRequest();
+        if (null == pageDomain.getPageNum() || null == pageDomain.getPageSize())
+        {
+            rspData.setRows(barcodeList);
+            rspData.setTotal(barcodeList.size());
+            return rspData;
+        }
+        Integer pageNum = (pageDomain.getPageNum() - 1) * 10;
+        Integer pageSize = pageDomain.getPageNum() * 10;
+        if (pageSize > barcodeList.size())
+        {
+            pageSize = barcodeList.size();
+        }
+        rspData.setRows(barcodeList.subList(pageNum, pageSize));
+        rspData.setTotal(barcodeList.size());
+        return rspData;
     }
 }

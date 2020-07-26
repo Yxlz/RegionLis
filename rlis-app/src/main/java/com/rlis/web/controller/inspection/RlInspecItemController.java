@@ -7,6 +7,7 @@ import com.rlis.common.core.domain.AjaxResult;
 import com.rlis.common.core.page.TableDataInfo;
 import com.rlis.common.enums.BusinessType;
 import com.rlis.common.utils.DateUtils;
+import com.rlis.common.utils.UUIDGenerator;
 import com.rlis.common.utils.poi.ExcelUtil;
 import com.rlis.core.util.ShiroUtils;
 import com.rlis.inspection.domain.RlInspecItem;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * 检验项目Controller
@@ -97,7 +97,7 @@ public class RlInspecItemController extends BaseController
     public AjaxResult addSave(RlInspecItem rlInspecItem)
     {
         rlInspecItem.setCreateTime(DateUtils.getNowDate());
-        rlInspecItem.setItemId(UUID.randomUUID().toString().replace("-", ""));
+        rlInspecItem.setItemId(UUIDGenerator.getUUID());
         rlInspecItem.setCreateBy(ShiroUtils.getLoginName());
         RlSysUser user = rlSysUserService.selectUserByLoginName(ShiroUtils.getLoginName());
         rlInspecItem.setOrgId(user.getOrgId());

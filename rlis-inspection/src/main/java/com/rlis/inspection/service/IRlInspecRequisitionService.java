@@ -1,6 +1,8 @@
 package com.rlis.inspection.service;
 
 import java.util.List;
+
+import com.rlis.common.exception.barcode.GetLisBarCodeFailureException;
 import com.rlis.inspection.domain.RlInspecRequisition;
 
 /**
@@ -58,4 +60,11 @@ public interface IRlInspecRequisitionService
      * @return 结果
      */
     public int deleteRlInspecRequisitionById(String id);
+
+    /**
+     * 提交检验申请信息（打院内条码）
+     *
+     * @param rlInspecRequisition 检验申请
+     */
+    void commitRequisition(RlInspecRequisition rlInspecRequisition) throws GetLisBarCodeFailureException, Exception;
 }

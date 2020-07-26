@@ -46,7 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectRlInspecRequisitionVo">
-        select ID, APP_NO, APP_TYPE, APP_TIME, APP_STATUS, APP_ORG_CODE, APP_ORG_NAME, APP_DOC_CODE, APP_DOC_NAME, APP_ORG_PHONE, SERVICE_ORG_CODE, SERVICE_ORG_NAME, PATIENT_ID, PATIENT_NAME, PATIENT_IDNO, PATIENT_AGE, PATIENT_SEX, PATIENT_PHONE, PATIENT_TYPE, PATIENT_CODE, PATIENT_DIAGNOSIS, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME from RL_INSPEC_REQUISITION
+        select ID, APP_NO, APP_TYPE, APP_TIME, APP_STATUS, APP_ORG_CODE, APP_ORG_NAME, APP_DOC_CODE, APP_DOC_NAME, APP_ORG_PHONE, APP_AMOUNT, SERVICE_ORG_CODE, SERVICE_ORG_NAME, PATIENT_ID, PATIENT_NAME, PATIENT_IDNO, PATIENT_AGE, PATIENT_SEX, PATIENT_PHONE, PATIENT_TYPE, PATIENT_CODE, PATIENT_DIAGNOSIS, CREATE_BY, CREATE_TIME, UPDATE_BY, UPDATE_TIME from RL_INSPEC_REQUISITION
     </sql>
 
     <select id="selectRlInspecRequisitionList" parameterType="RlInspecRequisition" resultMap="RlInspecRequisitionResult">
@@ -184,10 +184,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <insert id="batchRlInspecRequisitionItems">
-        insert into RL_INSPEC_REQUISITION_ITEMS( ID, REQUISITION_ID, ITEM_CODE, ITEM_NAME, ITEM_PRICE) values
+        <!--insert into RL_INSPEC_REQUISITION_ITEMS( ID, REQUISITION_ID, ITEM_CODE, ITEM_NAME, ITEM_PRICE) values
 		<foreach item="item" index="index" collection="list" separator=",">
             ( #{item.id}, #{item.requisitionId}, #{item.itemCode}, #{item.itemName}, #{item.itemPrice})
+        </foreach>-->
+        <!--INSERT ALL
+        <foreach item="item" index="index" collection="list" separator="  ">
+            into RL_INSPEC_REQUISITION_ITEMS( ID, REQUISITION_ID, ITEM_CODE, ITEM_NAME, ITEM_PRICE) values ( #{item.id}, #{item.requisitionId}, #{item.itemCode}, #{item.itemName}, #{item.itemPrice})
         </foreach>
+        SELECT * FROM dual;-->
+        insert into RL_INSPEC_REQUISITION_ITEMS( ID, REQUISITION_ID, ITEM_CODE, ITEM_NAME, ITEM_PRICE)
+        <foreach item="item" index="index" collection="list" separator="union all">
+            (select #{item.id}, #{item.requisitionId}, #{item.itemCode}, #{item.itemName}, #{item.itemPrice} from dual)
+        </foreach>-->
     </insert>
 
 </mapper>

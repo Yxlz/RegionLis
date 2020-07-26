@@ -1312,6 +1312,172 @@ alter table RL_INSPEC_REQUISITION_ITEMS
             maxtrans 255;
 
 
+/*==============================================================*/
+/* Table: RL_INSPEC_REQUISITION_BARCODE  检验申请条码表            */
+/*==============================================================*/
+-- Create table
+create table RL_INSPEC_REQUISITION_BARCODE
+(
+    id                    VARCHAR2(32) not null,
+    requisition_id        VARCHAR2(32) not null,
+    barcode               VARCHAR2(16) not null,
+    patient_id            VARCHAR2(32),
+    patient_name          VARCHAR2(10),
+    patient_type          VARCHAR2(10),
+    patient_sex           VARCHAR2(4),
+    patient_code          VARCHAR2(32),
+    patient_age           VARCHAR2(10),
+    items                 VARCHAR2(200),
+    excute_section        VARCHAR2(20),
+    report_place          VARCHAR2(200),
+    report_time           VARCHAR2(200),
+    sample_collect_date   VARCHAR2(100),
+    sample_collect_advice VARCHAR2(200),
+    sample_state          VARCHAR2(2),
+    print_time            VARCHAR2(30),
+    remark                VARCHAR2(50)
+)
+    tablespace REGIONLIS
+    pctfree 10
+    initrans 1
+    maxtrans 255
+    storage
+(
+    initial 64K
+    minextents 1
+    maxextents unlimited
+);
+-- Add comments to the table
+comment on table RL_INSPEC_REQUISITION_BARCODE
+    is '检验申请单条码';
+-- Add comments to the columns
+comment on column RL_INSPEC_REQUISITION_BARCODE.id
+    is '主键ID';
+comment on column RL_INSPEC_REQUISITION_BARCODE.requisition_id
+    is '申请单ID';
+comment on column RL_INSPEC_REQUISITION_BARCODE.barcode
+    is '条码号';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_id
+    is '病人ID';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_name
+    is '病人姓名';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_type
+    is '病人类型';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_sex
+    is '病人性别';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_code
+    is '病人号';
+comment on column RL_INSPEC_REQUISITION_BARCODE.patient_age
+    is '病人年龄';
+comment on column RL_INSPEC_REQUISITION_BARCODE.items
+    is '项目名称';
+comment on column RL_INSPEC_REQUISITION_BARCODE.excute_section
+    is '执行科室';
+comment on column RL_INSPEC_REQUISITION_BARCODE.report_place
+    is '报告地点';
+comment on column RL_INSPEC_REQUISITION_BARCODE.report_time
+    is '报告时间';
+comment on column RL_INSPEC_REQUISITION_BARCODE.sample_collect_date
+    is '样本采集时间';
+comment on column RL_INSPEC_REQUISITION_BARCODE.sample_collect_advice
+    is '样本采集要求';
+comment on column RL_INSPEC_REQUISITION_BARCODE.sample_state
+    is '样本状态';
+comment on column RL_INSPEC_REQUISITION_BARCODE.print_time
+    is '条码打印时间';
+comment on column RL_INSPEC_REQUISITION_BARCODE.remark
+    is '备注';
+-- Create/Recreate primary, unique and foreign key constraints
+alter table RL_INSPEC_REQUISITION_BARCODE
+    add constraint PK_RL_INSPEC_REQ_BARCODE primary key (ID)
+        using index
+            tablespace REGIONLIS
+            pctfree 10
+            initrans 2
+            maxtrans 255;
+alter table RL_INSPEC_REQUISITION_BARCODE
+    add constraint UK_RL_INSPEC_REQ_BARCODE unique (REQUISITION_ID, BARCODE)
+        using index
+            tablespace REGIONLIS
+            pctfree 10
+            initrans 2
+            maxtrans 255;
+
+
+-- Create table
+create table TB_PRINT_TEMPLATE
+(
+    id          INTEGER not null,
+    type        VARCHAR2(20),
+    project_id  INTEGER,
+    create_time DATE,
+    content     CLOB,
+    operator    VARCHAR2(40),
+    state       VARCHAR2(20),
+    update_time DATE,
+    remark      VARCHAR2(255),
+    print_mode  VARCHAR2(20)
+)
+    tablespace REGIONLIS
+    pctfree 10
+    initrans 1
+    maxtrans 255
+    storage
+(
+    initial 64K
+    minextents 1
+    maxextents unlimited
+);
+-- Add comments to the table
+comment on table TB_PRINT_TEMPLATE
+    is '打印模板';
+-- Add comments to the columns
+comment on column TB_PRINT_TEMPLATE.type
+    is '模板类别';
+comment on column TB_PRINT_TEMPLATE.state
+    is '''状态：0启用 1停用''';
+comment on column TB_PRINT_TEMPLATE.print_mode
+    is '''打印方式 01空白纸打印  02套打''';
+-- Create/Recreate primary, unique and foreign key constraints
+alter table TB_PRINT_TEMPLATE
+    add constraint PK_TB_PRINT_TEMPLATE primary key (ID)
+        using index
+            tablespace REGIONLIS
+            pctfree 10
+            initrans 2
+            maxtrans 255;
+
+
+-- Create table
+create table TB_PRINT_TEMPLATE_CONTENT
+(
+    id      INTEGER not null,
+    temp_id INTEGER,
+    content CLOB
+)
+    tablespace REGIONLIS
+    pctfree 10
+    initrans 1
+    maxtrans 255
+    storage
+(
+    initial 64K
+    minextents 1
+    maxextents unlimited
+);
+-- Add comments to the table
+comment on table TB_PRINT_TEMPLATE_CONTENT
+    is '打印模板-套打内容表打印模板-套打内容表';
+-- Create/Recreate primary, unique and foreign key constraints
+alter table TB_PRINT_TEMPLATE_CONTENT
+    add constraint PK_TB_PRINT_TEMPLATE_CONTENT primary key (ID)
+        using index
+            tablespace REGIONLIS
+            pctfree 10
+            initrans 2
+            maxtrans 255;
+
+
 -- ----------------------------
 -- 函数 ，代替mysql的find_in_set
 -- 例如： select * from rl_sys_org where FIND_IN_SET (101,ancestors) <> 0

@@ -33,7 +33,19 @@ public class Global
     /** 获取地址开关 */
     private static boolean addressEnabled;
 
+    /** 中心机构ID */
     private static Long orgCenterId;
+
+    /** 中心机构名称 */
+    private static String orgCenterName;
+
+    public static String getOrgCenterName() {
+        return orgCenterName;
+    }
+
+    public static void setOrgCenterName(String orgCenterName) {
+        Global.orgCenterName = orgCenterName;
+    }
 
     public static Long getOrgCenterId() {
         return orgCenterId;

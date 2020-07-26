@@ -62,8 +62,8 @@
             <property name="rootInterface" value=""/>
         </javaClientGenerator>
         <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名-->
-        <table tableName="RL_INSPEC_ITEM"
-               domainObjectName="RlInspecItem"
+        <table tableName="RL_INSPEC_REQUISITION_BARCODE"
+               domainObjectName="RlInspecRequisitionBarcode"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

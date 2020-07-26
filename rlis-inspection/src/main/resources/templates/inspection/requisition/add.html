@@ -103,7 +103,7 @@
                     <div class="form-group">
                         <label class="col-xs-2 control-label">初步诊断：</label>
                         <div class="col-xs-10">
-                            <textarea name="remark" maxlength="500" class="form-control" rows="3"></textarea>
+                            <textarea name="patientDiagnosis" maxlength="500" class="form-control" rows="3"></textarea>
                         </div>
                     </div>
                 </div>
@@ -134,30 +134,6 @@
         $("#form-requisition-add").validate({
             focusCleanup: true
         });
-
-        /*申请单管理-新增-选择机构树*/
-        function selectOrgTree() {
-            var treeId = $("#treeId").val();
-            var orgId = $.common.isEmpty(treeId) ? "100" : $("#treeId").val();
-            var url = ctx + "system/dept/selectDeptTree/" + orgId;
-            var options = {
-                title: '选择机构',
-                width: "380",
-                url: url,
-                callBack: doSubmit
-            };
-            $.modal.openOptions(options);
-        }
-
-        function doSubmit(index, layero){
-            var tree = layero.find("iframe")[0].contentWindow.$._tree;
-            if ($.tree.notAllowParents(tree)) {
-                var body = layer.getChildFrame('body', index);
-                $("#treeId").val(body.find('#treeId').val());
-                $("#treeName").val(body.find('#treeName').val());
-                layer.close(index);
-            }
-        }
 
         var testBsSuggest = $("#suggest-standarditems").bsSuggest({
             url: ctx + "inspection/item/fixItemModel",
@@ -220,7 +196,7 @@
                     align: 'center',
                     title: '申请项目编码',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='rlInspecRequisitionItemsList[%s].itemCode' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemCode' value='%s'>", index, value);
                         return html;
                     }
                 },
@@ -229,7 +205,7 @@
                     align: 'center',
                     title: '申请项目名称',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='rlInspecRequisitionItemsList[%s].itemName' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemName' value='%s'>", index, value);
                         return html;
                     }
                 },
@@ -238,7 +214,7 @@
                     align: 'center',
                     title: '项目价格',
                     formatter: function(value, row, index) {
-                        var html = $.common.sprintf("<input class='form-control' type='text' name='rlInspecRequisitionItemsList[%s].itemPrice' value='%s'>", index, value);
+                        var html = $.common.sprintf("<input class='form-control' disabled='' type='text' name='rlInspecRequisitionItemsList[%s].itemPrice' value='%s'>", index, value);
                         return html;
                     }
                 

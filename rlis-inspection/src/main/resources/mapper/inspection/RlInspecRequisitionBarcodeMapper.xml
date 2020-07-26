@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.rlis.inspection.mapper.RlInspecRequisitionBarcodeMapper">
+  <resultMap id="BaseResultMap" type="com.rlis.inspection.domain.RlInspecRequisitionBarcode">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="REQUISITION_ID" jdbcType="VARCHAR" property="requisitionId" />
+    <result column="BARCODE" jdbcType="VARCHAR" property="barcode" />
+    <result column="PATIENT_ID" jdbcType="VARCHAR" property="patientId" />
+    <result column="PATIENT_NAME" jdbcType="VARCHAR" property="patientName" />
+    <result column="PATIENT_TYPE" jdbcType="VARCHAR" property="patientType" />
+    <result column="PATIENT_SEX" jdbcType="VARCHAR" property="patientSex" />
+    <result column="PATIENT_CODE" jdbcType="VARCHAR" property="patientCode" />
+    <result column="PATIENT_AGE" jdbcType="VARCHAR" property="patientAge" />
+    <result column="ITEMS" jdbcType="VARCHAR" property="items" />
+    <result column="EXCUTE_SECTION" jdbcType="VARCHAR" property="excuteSection" />
+    <result column="REPORT_PLACE" jdbcType="VARCHAR" property="reportPlace" />
+    <result column="REPORT_TIME" jdbcType="VARCHAR" property="reportTime" />
+    <result column="SAMPLE_COLLECT_DATE" jdbcType="VARCHAR" property="sampleCollectDate" />
+    <result column="SAMPLE_COLLECT_ADVICE" jdbcType="VARCHAR" property="sampleCollectAdvice" />
+    <result column="SAMPLE_STATE" jdbcType="VARCHAR" property="sampleState" />
+    <result column="PRINT_TIME" jdbcType="VARCHAR" property="printTime" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, REQUISITION_ID, BARCODE, PATIENT_ID, PATIENT_NAME, PATIENT_TYPE, PATIENT_SEX, 
+    PATIENT_CODE, PATIENT_AGE, ITEMS, EXCUTE_SECTION, REPORT_PLACE, REPORT_TIME, SAMPLE_COLLECT_DATE, 
+    SAMPLE_COLLECT_ADVICE, SAMPLE_STATE, PRINT_TIME, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from RL_INSPEC_REQUISITION_BARCODE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByRequisitionId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from RL_INSPEC_REQUISITION_BARCODE
+    where REQUISITION_ID = #{requisitionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from RL_INSPEC_REQUISITION_BARCODE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.rlis.inspection.domain.RlInspecRequisitionBarcode">
+    insert into RL_INSPEC_REQUISITION_BARCODE (ID, REQUISITION_ID, BARCODE, 
+      PATIENT_ID, PATIENT_NAME, PATIENT_TYPE, 
+      PATIENT_SEX, PATIENT_CODE, PATIENT_AGE, 
+      ITEMS, EXCUTE_SECTION, REPORT_PLACE, 
+      REPORT_TIME, SAMPLE_COLLECT_DATE, SAMPLE_COLLECT_ADVICE, 
+      SAMPLE_STATE, PRINT_TIME, REMARK
+      )
+    values (#{id,jdbcType=VARCHAR}, #{requisitionId,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR}, 
+      #{patientId,jdbcType=VARCHAR}, #{patientName,jdbcType=VARCHAR}, #{patientType,jdbcType=VARCHAR}, 
+      #{patientSex,jdbcType=VARCHAR}, #{patientCode,jdbcType=VARCHAR}, #{patientAge,jdbcType=VARCHAR}, 
+      #{items,jdbcType=VARCHAR}, #{excuteSection,jdbcType=VARCHAR}, #{reportPlace,jdbcType=VARCHAR}, 
+      #{reportTime,jdbcType=VARCHAR}, #{sampleCollectDate,jdbcType=VARCHAR}, #{sampleCollectAdvice,jdbcType=VARCHAR}, 
+      #{sampleState,jdbcType=VARCHAR}, #{printTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.rlis.inspection.domain.RlInspecRequisitionBarcode">
+    insert into RL_INSPEC_REQUISITION_BARCODE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="requisitionId != null">
+        REQUISITION_ID,
+      </if>
+      <if test="barcode != null">
+        BARCODE,
+      </if>
+      <if test="patientId != null">
+        PATIENT_ID,
+      </if>
+      <if test="patientName != null">
+        PATIENT_NAME,
+      </if>
+      <if test="patientType != null">
+        PATIENT_TYPE,
+      </if>
+      <if test="patientSex != null">
+        PATIENT_SEX,
+      </if>
+      <if test="patientCode != null">
+        PATIENT_CODE,
+      </if>
+      <if test="patientAge != null">
+        PATIENT_AGE,
+      </if>
+      <if test="items != null">
+        ITEMS,
+      </if>
+      <if test="excuteSection != null">
+        EXCUTE_SECTION,
+      </if>
+      <if test="reportPlace != null">
+        REPORT_PLACE,
+      </if>
+      <if test="reportTime != null">
+        REPORT_TIME,
+      </if>
+      <if test="sampleCollectDate != null">
+        SAMPLE_COLLECT_DATE,
+      </if>
+      <if test="sampleCollectAdvice != null">
+        SAMPLE_COLLECT_ADVICE,
+      </if>
+      <if test="sampleState != null">
+        SAMPLE_STATE,
+      </if>
+      <if test="printTime != null">
+        PRINT_TIME,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="requisitionId != null">
+        #{requisitionId,jdbcType=VARCHAR},
+      </if>
+      <if test="barcode != null">
+        #{barcode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null">
+        #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientType != null">
+        #{patientType,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientCode != null">
+        #{patientCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientAge != null">
+        #{patientAge,jdbcType=VARCHAR},
+      </if>
+      <if test="items != null">
+        #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteSection != null">
+        #{excuteSection,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPlace != null">
+        #{reportPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="reportTime != null">
+        #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleCollectDate != null">
+        #{sampleCollectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleCollectAdvice != null">
+        #{sampleCollectAdvice,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleState != null">
+        #{sampleState,jdbcType=VARCHAR},
+      </if>
+      <if test="printTime != null">
+        #{printTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.rlis.inspection.domain.RlInspecRequisitionBarcode">
+    update RL_INSPEC_REQUISITION_BARCODE
+    <set>
+      <if test="requisitionId != null">
+        REQUISITION_ID = #{requisitionId,jdbcType=VARCHAR},
+      </if>
+      <if test="barcode != null">
+        BARCODE = #{barcode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientId != null">
+        PATIENT_ID = #{patientId,jdbcType=VARCHAR},
+      </if>
+      <if test="patientName != null">
+        PATIENT_NAME = #{patientName,jdbcType=VARCHAR},
+      </if>
+      <if test="patientType != null">
+        PATIENT_TYPE = #{patientType,jdbcType=VARCHAR},
+      </if>
+      <if test="patientSex != null">
+        PATIENT_SEX = #{patientSex,jdbcType=VARCHAR},
+      </if>
+      <if test="patientCode != null">
+        PATIENT_CODE = #{patientCode,jdbcType=VARCHAR},
+      </if>
+      <if test="patientAge != null">
+        PATIENT_AGE = #{patientAge,jdbcType=VARCHAR},
+      </if>
+      <if test="items != null">
+        ITEMS = #{items,jdbcType=VARCHAR},
+      </if>
+      <if test="excuteSection != null">
+        EXCUTE_SECTION = #{excuteSection,jdbcType=VARCHAR},
+      </if>
+      <if test="reportPlace != null">
+        REPORT_PLACE = #{reportPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="reportTime != null">
+        REPORT_TIME = #{reportTime,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleCollectDate != null">
+        SAMPLE_COLLECT_DATE = #{sampleCollectDate,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleCollectAdvice != null">
+        SAMPLE_COLLECT_ADVICE = #{sampleCollectAdvice,jdbcType=VARCHAR},
+      </if>
+      <if test="sampleState != null">
+        SAMPLE_STATE = #{sampleState,jdbcType=VARCHAR},
+      </if>
+      <if test="printTime != null">
+        PRINT_TIME = #{printTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.rlis.inspection.domain.RlInspecRequisitionBarcode">
+    update RL_INSPEC_REQUISITION_BARCODE
+    set REQUISITION_ID = #{requisitionId,jdbcType=VARCHAR},
+      BARCODE = #{barcode,jdbcType=VARCHAR},
+      PATIENT_ID = #{patientId,jdbcType=VARCHAR},
+      PATIENT_NAME = #{patientName,jdbcType=VARCHAR},
+      PATIENT_TYPE = #{patientType,jdbcType=VARCHAR},
+      PATIENT_SEX = #{patientSex,jdbcType=VARCHAR},
+      PATIENT_CODE = #{patientCode,jdbcType=VARCHAR},
+      PATIENT_AGE = #{patientAge,jdbcType=VARCHAR},
+      ITEMS = #{items,jdbcType=VARCHAR},
+      EXCUTE_SECTION = #{excuteSection,jdbcType=VARCHAR},
+      REPORT_PLACE = #{reportPlace,jdbcType=VARCHAR},
+      REPORT_TIME = #{reportTime,jdbcType=VARCHAR},
+      SAMPLE_COLLECT_DATE = #{sampleCollectDate,jdbcType=VARCHAR},
+      SAMPLE_COLLECT_ADVICE = #{sampleCollectAdvice,jdbcType=VARCHAR},
+      SAMPLE_STATE = #{sampleState,jdbcType=VARCHAR},
+      PRINT_TIME = #{printTime,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

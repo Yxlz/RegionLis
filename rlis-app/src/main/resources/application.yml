@@ -14,6 +14,8 @@ regionlis:
   addressEnabled: false
   # 检验中心（华西二院）医院ID
   orgCenterId: 100
+  # 检验中心（华西二院）医院
+  orgCenterName: 四川大学华西二院
 
 # 开发环境配置
 server:

@@ -2,6 +2,12 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <th:block th:include="include :: header('检验申请列表')" />
+    <!--<th:block th:include="include :: lodopFuncs-js" />-->
+    <script th:src="@{/ajax/libs/lodop/LodopFuncs.js}"></script>
+    <object id="LODOP_OB" classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA"width=0 height=0>
+        <embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+    </object>
+
 </head>
 <body class="gray-bg">
      <div class="container-div">
@@ -74,6 +80,11 @@
                 updateUrl: prefix + "/edit/{id}",
                 removeUrl: prefix + "/remove",
                 exportUrl: prefix + "/export",
+                detailUrl: prefix + "/detail/{id}",
+                detailView: true,
+                onExpandRow : function(index, row, $detail) {
+                    initChildTable(index, row, $detail);
+                },
                 modalName: "检验申请",
                 columns: [{
                     checkbox: true
@@ -132,19 +143,109 @@
                     field: 'patientCode',
                     title: '就诊号'
                 },
+                    {
+                        field: 'appAmount',
+                        title: '项目金额'
+                    },
                 {
                     title: '操作',
                     align: 'center',
                     formatter: function(value, row, index) {
                         var actions = [];
-                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.edit(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
-                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a>');
+                        actions.push('<a class="btn btn-success btn-xs ' + editFlag + '" href="javascript:void(0)" onclick="$.operate.editTab(\'' + row.id + '\')"><i class="fa fa-edit"></i>编辑</a> ');
+                        actions.push('<a class="btn btn-danger btn-xs ' + removeFlag + '" href="javascript:void(0)" onclick="$.operate.remove(\'' + row.id + '\')"><i class="fa fa-remove"></i>删除</a> ');
+                        actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-search"></i>详细</a> ');
+                        actions.push('<a class="btn btn-warning btn-xs" href="javascript:void(0)" onclick="commit(\'' + row.id + '\')"><i class="fa fa-send"></i>提交</a> ');
                         return actions.join('');
                     }
                 }]
             };
             $.table.init(options);
         });
+        function commit(id) {
+            var url = prefix + '/commit';
+            var data = {
+                "id":id
+            }
+            $.operate.saveModal(url, data);
+        }
+        initChildTable = function(index, row, $detail) {
+            var childTable = $detail.html('<table style="table-layout:fixed"></table>').find('table');
+            $(childTable).bootstrapTable({
+                url: prefix + "/barcode",
+                method: 'post',
+                sidePagination: "server",
+                contentType: "application/x-www-form-urlencoded",
+                queryParams : {
+                    requisitionId: row.id
+                },
+                columns: [{
+                    field : 'barcode',
+                    title : '条码号'
+                },
+                    {
+                        field : 'items',
+                        title : '项目'
+                    },
+                    {
+                        field : 'excuteSection',
+                        title : '执行科室'
+                    },
+                    {
+                        field : 'sampleCollectAdvice',
+                        title : '采集要求'
+                    },
+                    {
+                        field : 'sampleCollectDate',
+                        title : '采集时间'
+                    },
+                    {
+                        field : 'reportPlace',
+                        title : '报告地点'
+                    },
+                    {
+                        field : 'reportTime',
+                        title : '报告时间'
+                    },
+                    {
+                        field : 'printTime',
+                        title : '打印时间'
+                    },
+                    {
+                        title: '操作',
+                        align: 'center',
+                        formatter: function(value, row, index) {
+                            var actions = [];
+                            actions.push('<a class="btn btn-info btn-xs" href="javascript:void(0)" onclick="printBarcode(\'' + row.id + '\')"><i class="fa fa-print"></i>预览</a> ');
+                            actions.push('<a class="btn btn-success btn-xs" href="javascript:void(0)" onclick="printBarcode(\'' + row.id + '\')"><i class="fa fa-print"></i>打印</a>');
+                            return actions.join('');
+                        }
+                    }]
+            });
+        };
+        printBarcode = function(index) {
+            var childTable = $detail.html('<table style="table-layout:fixed"></table>').find('table');
+            var row = $(childTable).bootstrapTable("getData")[index];
+            var LODOP=getLodop();
+            //var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+            LODOP.PRINT_INIT("打印条码");
+            LODOP.SET_PRINT_PAGESIZE(1,'5cm','3.7cm',2);
+            LODOP.ADD_PRINT_BARCODE(3,3,101,60,"128c",row.barcode);//条码
+
+            LODOP.ADD_PRINT_TEXT(4, 111, 45, 20, row.excuteSection);//检验类别
+            LODOP.ADD_PRINT_TEXT(24, 111, 45, 20, "外院");//病人类型
+
+            LODOP.ADD_PRINT_TEXT(46, 106, 25, 40, row.patientSex);//性别
+            LODOP.ADD_PRINT_TEXT(46, 124, 25, 40, row.patientAge);//年龄
+            LODOP.ADD_PRINT_TEXT(46, 138, 65, 40, row.patientName);//姓名
+
+            LODOP.ADD_PRINT_TEXT(68, 4, 285, 21, row.items);//项目
+
+            //LODOP.ADD_PRINT_TEXT(84, 4, 205, 21, sampleSourceFrom);//标本来源
+            //LODOP.ADD_PRINT_TEXT(100, 4, 205, 21, row.);//申请时间
+            LODOP.PREVIEW();//打印预览
+            LODOP.SET_PRINT_MODE("CATCH_PRINT_STATUS",true);
+        }
     </script>
 </body>
 </html>
